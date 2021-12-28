@@ -2,6 +2,8 @@ import {React} from 'react';
 import {Button, ButtonGroup, TextField} from '@material-ui/core';
 import { Register } from './UserModule/register';
 import { Login } from './UserModule/login';
+import {Topbar} from './UserModule/topBar.js'
+
 
 export const Home = () =>{
 
@@ -15,7 +17,7 @@ export const Home = () =>{
     <Button variant="contained" color="primary">
         Register User
     </Button>
-    <Login></Login>
+ 
         </div>
     );
 
