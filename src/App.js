@@ -1,29 +1,31 @@
-import './App.css';
-import {Home} from './home.js';
-import {Login} from './UserModule/login.js'
-import {Register} from './UserModule/register.js'
-import {HomeContainer} from './conatiners/HomeContainers.js'
-import {BrowserRouter ,Routes, Switch, Route} from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
+import { useSelector } from "react-redux";
+
+import './App.css';
+import { Login } from './UserModule/login.js'
+import { Register } from './UserModule/register.js'
+import { HomeContainer } from './conatiners/HomeContainers.js'
 
 toast.configure()
 
 
 function App() {
- 
+
+  const user = useSelector((state)=>state.userReducer.user);
+  console.log(user);
+
   return (
     <div className="App">
 
-<BrowserRouter>
-      <Routes>
-          <Route path="/" element={<Login/>} />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={user?<HomeContainer/>:<Login/>} />
           <Route path="/Register" element={< Register />} />
-          <Route path='/HomeContainer'  element={<HomeContainer></HomeContainer>} />
-          
-      </Routes>
-    </BrowserRouter>
-    {/* <Router>
+        </Routes>
+      </BrowserRouter>
+      {/* <Router>
         <Switch>
          
           <Route path='/' exact component={Home} />
@@ -33,7 +35,7 @@ function App() {
         </Switch>
         
     </Router> */}
-  </div>
+    </div>
   );
 }
 

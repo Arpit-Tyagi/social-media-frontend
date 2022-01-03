@@ -1,22 +1,26 @@
 import { ActionType } from "../constants/actions-type";
 
 const initialState = {
-    user:{}
+    user: null
 }
 
-export const userReducer = (state =initialState, action) =>{
+export const userReducer = (state = initialState.user, action) => {
 
-    switch(action.type){
+    switch (action.type) {
 
         case ActionType.User_Register:
-            return {...state, user: action.payload };
+            return { ...state, user: action.payload };
 
         case ActionType.User_Login:
-            return {...state, user: action.payload };
+            return { ...state, user: action.payload };
 
-        default :
-        return state;
+        case ActionType.User_Logout:
+            return { ...state, user: action.payload };
 
-        }
+
+        default:
+            return state;
+
+    }
 
 }

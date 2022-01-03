@@ -6,56 +6,66 @@ import {
   EmojiEmotions,
   Cancel,
 } from "@material-ui/icons";
-import { useContext, useRef, useState } from "react";
-// import { AuthContext } from "../../context/AuthContext";
-import axios from "axios";
+import { useRef, useState } from "react";
+import { useSelector } from "react-redux";
+
+import ApiService from '../services/ApiService';
 
 export const Share = () => {
-//   const { user } = useContext(AuthContext);
-//   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
-//   const desc = useRef();
+const { user } = useSelector((state)=>state.userReducer);
+  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+  const desc = useRef();
   const [file, setFile] = useState(null);
 
-//   const submitHandler = async (e) => {
-//     e.preventDefault();
-//     const newPost = {
-//       userId: user._id,
-//       desc: desc.current.value,
-//     };
-//     if (file) {
-//       const data = new FormData();
-//       const fileName = Date.now() + file.name;
-//       data.append("name", fileName);
-//       data.append("file", file);
-//       newPost.img = fileName;
-//       console.log(newPost);
-//       try {
-//         await axios.post("/upload", data);
-//       } catch (err) {}
-//     }
-//     try {
-//       await axios.post("/posts", newPost);
-//       window.location.reload();
-//     } catch (err) {}
-//   };
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    const newPost = {
+      userId: user._id,
+      desc: desc.current.value,
+      likes: [],
+      comments: [],
+      date:Date,
+    };
+
+    if (file) {
+      const data = new FormData();
+      const fileName = Date.now() + file.name;
+      data.append("name", fileName);
+      data.append("file", file);
+      newPost.img = fileName;
+      console.log(newPost);
+      console.log(data);
+      
+         ApiService.uploadfile(data).then(res=> {console.log(res.data)}
+         ).catch(err =>{
+          console.log(err.data)}
+         )
+    }
+      
+      ApiService.uploadPost(newPost).then(res=> {console.log(res.data)}
+      ).catch(err =>{
+       console.log(err.data)}
+      )
+      window.location.reload();
+}
 
   return (
     <div className="share">
       <div className="shareWrapper">
         <div className="shareTop">
-          {/* <img
+          <img
             className="shareProfileImg"
             src={
               user.profilePicture
                 ? PF + user.profilePicture
-                : PF + "person/noAvatar.png"
+                : PF + "noAvatar.png"
             }
             alt=""
-          /> */}
+          />
           <input
-            placeholder={"What's in your mind "  + "?"}
+            placeholder={"What's in your mind ?"}
             className="shareInput"
-            // ref={desc}
+            ref={desc}
           />
         </div>
         <hr className="shareHr" />
@@ -65,7 +75,7 @@ export const Share = () => {
             <Cancel className="shareCancelImg" onClick={() => setFile(null)} />
           </div>
         )}
-        <form className="shareBottom" >
+        <form className="shareBottom"  onSubmit={submitHandler}>
           <div className="shareOptions">
             <label htmlFor="file" className="shareOption">
               <PermMedia htmlColor="tomato" className="shareIcon" />
@@ -98,4 +108,5 @@ export const Share = () => {
       </div>
     </div>
   );
+
 }
